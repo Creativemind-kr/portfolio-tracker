@@ -51,11 +51,13 @@ export function verifySessionToken(token: string | undefined | null): boolean {
   }
 }
 
+// No maxAge/expires: this makes it a browser *session* cookie, cleared when the
+// browser fully closes, so re-opening always requires logging in again. The
+// token's own `exp` (SESSION_MAX_AGE_SECONDS) is still checked server-side as a backstop.
 export const SESSION_COOKIE_OPTIONS = {
   httpOnly: true,
   sameSite: "lax" as const,
   path: "/",
-  maxAge: SESSION_MAX_AGE_SECONDS,
   secure: process.env.NODE_ENV === "production",
 };
 
